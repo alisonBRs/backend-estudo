@@ -6,15 +6,17 @@ interface userService {
   email?: string;
 }
 
-export class HomeService {
-  private prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-  async getAll() {
-    return this.prisma.user.findMany();
+export class HomeService {
+  public async getAll() {
+    const getUser = await prisma.user.findMany();
+
+    return getUser;
   }
 
-  async getUser(id: number) {
-    const user = await this.prisma.user.findUnique({
+  public async getUser(id: number) {
+    const user = await prisma.user.findUnique({
       where: {
         id,
       },
@@ -23,8 +25,8 @@ export class HomeService {
     return user;
   }
 
-  async createUser(request: userService) {
-    const createUser = await this.prisma.user.create({
+  public async createUser(request: userService) {
+    const createUser = await prisma.user.create({
       data: {
         name: request.name,
         password: request.password,
@@ -35,3 +37,5 @@ export class HomeService {
     return createUser;
   }
 }
+
+export const homeService = new HomeService();

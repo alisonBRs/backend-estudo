@@ -1,19 +1,17 @@
 import { Request, Response } from "express";
-import { HomeService } from "../service/home";
+import { homeService } from "../service/home";
 
-class HomeController {
-  public homeService = new HomeService();
+export class HomeController {
+  public async get(req: Request, res: Response) {
+    const allUsers = await homeService.getAll();
 
-  async get(req: Request, res: Response) {
-    const allUsers = this.homeService.getAll;
-
-    return allUsers;
+    return res.json(allUsers);
   }
 
   public async create(req: Request, res: Response): Promise<Response> {
     const { name, password, email } = req.body;
 
-    const createUser = await this.homeService.createUser({
+    const createUser = await homeService.createUser({
       name,
       password,
       email,
